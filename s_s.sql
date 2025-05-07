@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 05, 2025 at 11:23 AM
+-- Generation Time: May 07, 2025 at 05:06 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `s&s`
+-- Database: `s_s_db`
 --
 
 -- --------------------------------------------------------
@@ -33,7 +33,9 @@ CREATE TABLE `device` (
   `qr_code` varchar(255) DEFAULT NULL,
   `caretaker_id` int(11) DEFAULT NULL,
   `longitude` varchar(100) DEFAULT NULL,
-  `latitude` varchar(100) DEFAULT NULL
+  `latitude` varchar(100) DEFAULT NULL,
+  `is_paired` tinyint(1) DEFAULT NULL,
+  `is_connected` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -45,7 +47,7 @@ CREATE TABLE `device` (
 CREATE TABLE `emergency` (
   `id` int(11) NOT NULL,
   `device_id` int(11) DEFAULT NULL,
-  `handled` tinyint(1) DEFAULT 0,
+  `handled` tinyint(1) DEFAULT NULL,
   `occured_at` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -60,7 +62,7 @@ CREATE TABLE `health` (
   `user_id` int(11) DEFAULT NULL,
   `date` date DEFAULT NULL,
   `steps` int(11) DEFAULT NULL,
-  `distance_km` int(11) DEFAULT NULL,
+  `distance(km)` int(11) DEFAULT NULL,
   `calories` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -73,8 +75,8 @@ CREATE TABLE `health` (
 CREATE TABLE `medication` (
   `id` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
-  `name` varchar(100) DEFAULT NULL,
-  `dosage_mg` int(11) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `dosage(mg)` date DEFAULT NULL,
   `instuction` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -88,7 +90,7 @@ CREATE TABLE `reminder` (
   `id` int(11) NOT NULL,
   `medication_id` int(11) DEFAULT NULL,
   `remind_at` time DEFAULT NULL,
-  `frequency` varchar(50) DEFAULT NULL,
+  `frequency` varchar(100) DEFAULT NULL,
   `next_reminder` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -100,7 +102,7 @@ CREATE TABLE `reminder` (
 
 CREATE TABLE `subscription` (
   `id` int(11) NOT NULL,
-  `name` varchar(100) NOT NULL
+  `name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -114,10 +116,10 @@ CREATE TABLE `user` (
   `email` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `birth_date` date DEFAULT NULL,
-  `weight_kg` int(11) DEFAULT NULL,
-  `height_cm` int(11) DEFAULT NULL,
-  `has_diabetes` tinyint(1) DEFAULT 0,
-  `has_dementia` tinyint(1) DEFAULT 0,
+  `weight(kg)` int(11) DEFAULT NULL,
+  `height(cm)` int(11) DEFAULT NULL,
+  `has_diabetes` tinyint(1) DEFAULT NULL,
+  `has_dementia` tinyint(1) DEFAULT NULL,
   `created_at` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -183,8 +185,7 @@ ALTER TABLE `subscription`
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `email` (`email`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `user_subscription`
