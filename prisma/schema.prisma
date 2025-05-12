@@ -1,0 +1,105 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model device {
+  id                             Int         @id @default(autoincrement())
+  owner_id                       Int?
+  qr_code                        String?     @db.VarChar(255)
+  caretaker_id                   Int?
+  longitude                      String?     @db.VarChar(100)
+  latitude                       String?     @db.VarChar(100)
+  is_paired                      Boolean?
+  is_connected                   Boolean?
+  user_device_owner_idTouser     user?       @relation("device_owner_idTouser", fields: [owner_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "device_ibfk_1")
+  user_device_caretaker_idTouser user?       @relation("device_caretaker_idTouser", fields: [caretaker_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "device_ibfk_2")
+  emergency                      emergency[]
+
+  @@index([caretaker_id], map: "caretaker_id")
+  @@index([owner_id], map: "owner_id")
+}
+
+model emergency {
+  id         Int       @id @default(autoincrement())
+  device_id  Int?
+  handled    Boolean?
+  occured_at DateTime? @db.Date
+  device     device?   @relation(fields: [device_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "emergency_ibfk_1")
+
+  @@index([device_id], map: "device_id")
+}
+
+model health {
+  id          Int       @id @default(autoincrement())
+  user_id     Int?
+  date        DateTime? @db.Date
+  steps       Int?
+  distance_km Int?
+  calories    Int?
+  user        user?     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "health_ibfk_1")
+
+  @@index([user_id], map: "user_id")
+}
+
+model medication {
+  id         Int        @id @default(autoincrement())
+  user_id    Int?
+  name       String?    @db.VarChar(255)
+  dosage_mg  Int?
+  instuction String?    @db.VarChar(255)
+  user       user?      @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "medication_ibfk_1")
+  reminder   reminder[]
+
+  @@index([user_id], map: "user_id")
+}
+
+model reminder {
+  id            Int         @id @default(autoincrement())
+  medication_id Int?
+  remind_at     DateTime?   @db.Time(0)
+  frequency     String?     @db.VarChar(100)
+  next_reminder DateTime    @default(now()) @db.Timestamp(0)
+  medication    medication? @relation(fields: [medication_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "reminder_ibfk_1")
+
+  @@index([medication_id], map: "medication_id")
+}
+
+model subscription {
+  id                Int                 @id @default(autoincrement())
+  name              String              @db.VarChar(255)
+  user_subscription user_subscription[]
+}
+
+model user {
+  id                               Int                 @id @default(autoincrement())
+  email                            String              @db.VarChar(255)
+  password                         String              @db.VarChar(255)
+  birth_date                       DateTime?           @db.Date
+  weight_kg                        Int?
+  height_cm                        Int?
+  has_diabetes                     Boolean?
+  has_dementia                     Boolean?
+  created_at                       DateTime?           @db.Date
+  device_device_owner_idTouser     device[]            @relation("device_owner_idTouser")
+  device_device_caretaker_idTouser device[]            @relation("device_caretaker_idTouser")
+  health                           health[]
+  medication                       medication[]
+  user_subscription                user_subscription[]
+}
+
+model user_subscription {
+  id              Int           @id @default(autoincrement())
+  user_id         Int?
+  subscription_id Int?
+  user            user?         @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_subscription_ibfk_1")
+  subscription    subscription? @relation(fields: [subscription_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_subscription_ibfk_2")
+
+  @@index([subscription_id], map: "subscription_id")
+  @@index([user_id], map: "user_id")
+}
