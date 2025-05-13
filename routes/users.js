@@ -32,6 +32,42 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+// Simple login
+router.post('/:id/login', async (req, res) => {
+  const { id } = req.params;
+  const { email, password } = req.body;
+
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: Number(id) },
+      include: {
+        health: true,
+        medication: {
+          include: { reminder: true }
+        },
+        device_device_owner_idTouser: true,
+        device_device_caretaker_idTouser: true,
+        user_subscription: {
+          include: { subscription: true }
+        }
+      }
+    });
+
+    if (!user || user.email !== email || user.password !== password) {
+      return res.status(401).json({ error: 'Invalid email or password' });
+    }
+
+    // Remove password before sending back
+    const { password: _, ...userWithoutPassword } = user;
+
+    res.json({ message: 'Login successful', user: userWithoutPassword });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Login failed' });
+  }
+});
+
+
 // POST -> Create a new user
 router.post('/', async (req, res) => {
   const { email, password, birth_date, weight_kg, height_cm, has_diabetes, has_dementia } = req.body;
