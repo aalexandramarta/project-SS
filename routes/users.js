@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const { PrismaClient } = require('../generated/prisma');
 const prisma = new PrismaClient();
+const bcrypt = require('bcrypt');
+
 
 // GET -> List all users
 router.get('/', async (req, res) => {
@@ -32,37 +34,63 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+// POST /users/register -> Secure user registration
+router.post('/register', async (req, res) => {
+  const { email, password, birth_date, weight_kg, height_cm, has_diabetes, has_dementia } = req.body;
+
+  try {
+    const existingUser = await prisma.user.findUnique({ where: { email } });
+    if (existingUser) {
+      return res.status(400).json({ error: 'Email already in use' });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const newUser = await prisma.user.create({
+      data: {
+        email,
+        password: hashedPassword,
+        birth_date: birth_date ? new Date(birth_date) : null,
+        weight_kg,
+        height_cm,
+        has_diabetes,
+        has_dementia,
+        created_at: new Date()
+      }
+    });
+
+    const { password: _, ...userWithoutPassword } = newUser;
+    res.status(201).json(userWithoutPassword);
+  } catch (error) {
+    console.error('Registration failed:', error);
+    res.status(500).json({ error: 'Registration failed', details: error.message });
+  }
+});
+
 // Simple login
-router.post('/:id/login', async (req, res) => {
-  const { id } = req.params;
+router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
   try {
     const user = await prisma.user.findUnique({
-      where: { id: Number(id) },
+      where: { email },
       include: {
         health: true,
-        medication: {
-          include: { reminder: true }
-        },
+        medication: { include: { reminder: true } },
         device_device_owner_idTouser: true,
         device_device_caretaker_idTouser: true,
-        user_subscription: {
-          include: { subscription: true }
-        }
+        user_subscription: { include: { subscription: true } }
       }
     });
 
-    if (!user || user.email !== email || user.password !== password) {
+    if (!user || !(await bcrypt.compare(password, user.password))) {
       return res.status(401).json({ error: 'Invalid email or password' });
     }
 
-    // Remove password before sending back
     const { password: _, ...userWithoutPassword } = user;
-
     res.json({ message: 'Login successful', user: userWithoutPassword });
   } catch (error) {
-    console.error(error);
+    console.error('Login error:', error);
     res.status(500).json({ error: 'Login failed' });
   }
 });
@@ -146,6 +174,62 @@ router.delete('/:id', async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(400).json({ error: 'User not found or cannot delete' });
+  }
+});
+
+//update profile
+router.post('/profile', async (req, res) => {
+  const {
+    userId,
+    name,
+    age,
+    address,
+    gender,
+    phone,
+    emergencyName,
+    emergencyPhone,
+    medication,
+    allergies,
+    diseases
+  } = req.body;
+
+  console.log("Received userId:", userId);
+  if (!userId) return res.status(400).json({ error: 'Missing userId' });
+
+  try {
+    const profile = await prisma.userprofile.upsert({
+      where: { userId },
+      update: {
+        name,
+        age: age ? parseInt(age) : null,
+        address,
+        gender,
+        phone,
+        emergencyName,
+        emergencyPhone,
+        medication,
+        allergies,
+        diseases
+      },
+      create: {
+        userId,
+        name,
+        age: age ? parseInt(age) : null,
+        address,
+        gender,
+        phone,
+        emergencyName,
+        emergencyPhone,
+        medication,
+        allergies,
+        diseases
+      }
+    });
+
+    res.json(profile);
+  } catch (error) {
+    console.error('Error saving profile:', error);
+    res.status(500).json({ error: 'Could not save profile' });
   }
 });
 

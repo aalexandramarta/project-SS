@@ -4,16 +4,17 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 const deviceRouter = require('./routes/devices');
 const emergencyRouter = require('./routes/emergencies');
 const userSubscriptionRouter = require('./routes/userSubscription');
 
+const cors = require('cors');
+var app = express(); // ✅ Define app first
 
-
-
-var app = express();
+app.use(cors());     // ✅ Now it's safe to use
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
