@@ -233,4 +233,24 @@ router.post('/profile', async (req, res) => {
   }
 });
 
+router.get('/profile/:id', async (req, res) => {
+  const userId = Number(req.params.id);
+  if (!userId) return res.status(400).json({ error: 'Missing userId' });
+
+  try {
+    const profile = await prisma.userprofile.findUnique({
+      where: { userId }
+    });
+
+    if (!profile) {
+      return res.status(404).json({ error: 'Profile not found' });
+    }
+
+    res.json(profile);
+  } catch (error) {
+    console.error('Error fetching profile:', error);
+    res.status(500).json({ error: 'Could not fetch profile' });
+  }
+});
+
 module.exports = router;
