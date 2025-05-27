@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 25, 2025 at 06:00 PM
+-- Generation Time: May 27, 2025 at 05:54 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -114,22 +114,24 @@ CREATE TABLE `subscription` (
 CREATE TABLE `user` (
   `id` int(11) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
+  `password` varchar(255) DEFAULT NULL,
   `birth_date` date DEFAULT NULL,
   `weight_kg` int(11) DEFAULT NULL,
   `height_cm` int(11) DEFAULT NULL,
   `has_diabetes` tinyint(1) DEFAULT NULL,
   `has_dementia` tinyint(1) DEFAULT NULL,
-  `created_at` date DEFAULT NULL
+  `created_at` date DEFAULT NULL,
+  `provider` varchar(50) DEFAULT 'local'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `email`, `password`, `birth_date`, `weight_kg`, `height_cm`, `has_diabetes`, `has_dementia`, `created_at`) VALUES
-(1, 'john.doe@example.com', '$2b$10$efq7vlgaP/.kSOzQc9/7UO4k8yDF.z5.Z1U1qxZrlJ5YG4L.D3w2K', '1990-05-22', 70, 175, 0, 0, '2025-05-22'),
-(2, '1test@gmail.com', '$2b$10$fcrrYOLnWDmrBrFP9G2mN.4Lrox.zp0Vtboos6PiKYOG47S/GQImi', NULL, NULL, NULL, NULL, NULL, '2025-05-23');
+INSERT INTO `user` (`id`, `email`, `password`, `birth_date`, `weight_kg`, `height_cm`, `has_diabetes`, `has_dementia`, `created_at`, `provider`) VALUES
+(1, 'john.doe@example.com', '$2b$10$efq7vlgaP/.kSOzQc9/7UO4k8yDF.z5.Z1U1qxZrlJ5YG4L.D3w2K', '1990-05-22', 70, 175, 0, 0, '2025-05-22', 'local'),
+(2, '1test@gmail.com', '$2b$10$fcrrYOLnWDmrBrFP9G2mN.4Lrox.zp0Vtboos6PiKYOG47S/GQImi', NULL, NULL, NULL, NULL, NULL, '2025-05-23', 'local'),
+(3, 'testeoficial818@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, '2025-05-27', 'google');
 
 -- --------------------------------------------------------
 
@@ -157,7 +159,7 @@ CREATE TABLE `userprofile` (
 --
 
 INSERT INTO `userprofile` (`id`, `userId`, `age`, `address`, `gender`, `phone`, `emergencyName`, `emergencyPhone`, `medication`, `allergies`, `diseases`, `name`) VALUES
-(1, 2, NULL, '', 'Male', '', '', '', '', '', '', 'koojoj');
+(1, 2, 88, 'Antwerp', 'Male', '2913321', 'Bill', '2188732', 'None', 'None', 'None', 'John');
 
 -- --------------------------------------------------------
 
@@ -283,7 +285,7 @@ ALTER TABLE `subscription`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `userprofile`
