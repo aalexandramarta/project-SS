@@ -3,6 +3,7 @@ const router = express.Router();
 const { PrismaClient } = require('../generated/prisma');
 const prisma = new PrismaClient();
 const bcrypt = require('bcrypt');
+const passport = require('passport');
 
 
 // GET -> List all users
@@ -36,15 +37,27 @@ router.get('/:id', async (req, res) => {
 
 // POST /users/register -> Secure user registration
 router.post('/register', async (req, res) => {
-  const { email, password, birth_date, weight_kg, height_cm, has_diabetes, has_dementia } = req.body;
+  const {
+    email,
+    password,
+    birth_date,
+    weight_kg,
+    height_cm,
+    has_diabetes,
+    has_dementia,
+    provider
+  } = req.body;
 
   try {
     const existingUser = await prisma.user.findUnique({ where: { email } });
     if (existingUser) {
-      return res.status(400).json({ error: 'Email already in use' });
+      return res.status(200).json(existingUser); // return existing for OAuth
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    let hashedPassword = null;
+    if (provider !== 'google' && password) {
+      hashedPassword = await bcrypt.hash(password, 10);
+    }
 
     const newUser = await prisma.user.create({
       data: {
@@ -55,6 +68,7 @@ router.post('/register', async (req, res) => {
         height_cm,
         has_diabetes,
         has_dementia,
+        provider: provider || 'local',
         created_at: new Date()
       }
     });
@@ -252,5 +266,6 @@ router.get('/profile/:id', async (req, res) => {
     res.status(500).json({ error: 'Could not fetch profile' });
   }
 });
+
 
 module.exports = router;

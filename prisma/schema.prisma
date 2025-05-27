@@ -79,13 +79,14 @@ model subscription {
 model user {
   id                               Int                 @id @default(autoincrement())
   email                            String              @unique(map: "user_email_unique") @db.VarChar(255)
-  password                         String              @db.VarChar(255)
+  password                         String?             @db.VarChar(255)
   birth_date                       DateTime?           @db.Date
   weight_kg                        Int?
   height_cm                        Int?
   has_diabetes                     Boolean?
   has_dementia                     Boolean?
   created_at                       DateTime?           @db.Date
+  provider                         String?             @default("local") @db.VarChar(50)
   device_device_owner_idTouser     device[]            @relation("device_owner_idTouser")
   device_device_caretaker_idTouser device[]            @relation("device_caretaker_idTouser")
   health                           health[]
