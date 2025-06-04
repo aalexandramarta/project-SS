@@ -19,19 +19,25 @@ router.get('/', async (req, res) => {
 
 // GET -> Get a user by ID
 router.get('/:id', async (req, res) => {
-  const { id } = req.params;
+  const id = parseInt(req.params.id, 10); // ✅ convert to number
+
+  if (isNaN(id)) {
+    return res.status(400).json({ error: 'Invalid user ID' });
+  }
+
   try {
     const user = await prisma.user.findUnique({
-      where: { id: Number(id) }
+      where: { id },
     });
-    if (user) {
-      res.json(user);
-    } else {
-      res.status(404).json({ error: 'User not found' });
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
     }
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal server error' });
+
+    res.json(user);
+  } catch (err) {
+    console.error('❌ Error fetching user by ID:', err);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 

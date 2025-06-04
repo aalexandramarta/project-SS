@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 27, 2025 at 05:54 PM
+-- Generation Time: Jun 03, 2025 at 05:05 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -131,7 +131,8 @@ CREATE TABLE `user` (
 INSERT INTO `user` (`id`, `email`, `password`, `birth_date`, `weight_kg`, `height_cm`, `has_diabetes`, `has_dementia`, `created_at`, `provider`) VALUES
 (1, 'john.doe@example.com', '$2b$10$efq7vlgaP/.kSOzQc9/7UO4k8yDF.z5.Z1U1qxZrlJ5YG4L.D3w2K', '1990-05-22', 70, 175, 0, 0, '2025-05-22', 'local'),
 (2, '1test@gmail.com', '$2b$10$fcrrYOLnWDmrBrFP9G2mN.4Lrox.zp0Vtboos6PiKYOG47S/GQImi', NULL, NULL, NULL, NULL, NULL, '2025-05-23', 'local'),
-(3, 'testeoficial818@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, '2025-05-27', 'google');
+(3, 'testeoficial818@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, '2025-05-27', 'google'),
+(4, '2test@gmail.com', '$2b$10$jDA9DGFeudjBN7YjjWFmeOwfFdXMGu1HEZb45SZHCCtb8ELsUVW4S', NULL, NULL, NULL, NULL, NULL, '2025-06-03', 'local');
 
 -- --------------------------------------------------------
 
@@ -285,7 +286,7 @@ ALTER TABLE `subscription`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `userprofile`
