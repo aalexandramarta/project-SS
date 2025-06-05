@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 03, 2025 at 05:05 PM
+-- Generation Time: Jun 04, 2025 at 07:40 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -132,7 +132,8 @@ INSERT INTO `user` (`id`, `email`, `password`, `birth_date`, `weight_kg`, `heigh
 (1, 'john.doe@example.com', '$2b$10$efq7vlgaP/.kSOzQc9/7UO4k8yDF.z5.Z1U1qxZrlJ5YG4L.D3w2K', '1990-05-22', 70, 175, 0, 0, '2025-05-22', 'local'),
 (2, '1test@gmail.com', '$2b$10$fcrrYOLnWDmrBrFP9G2mN.4Lrox.zp0Vtboos6PiKYOG47S/GQImi', NULL, NULL, NULL, NULL, NULL, '2025-05-23', 'local'),
 (3, 'testeoficial818@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, '2025-05-27', 'google'),
-(4, '2test@gmail.com', '$2b$10$jDA9DGFeudjBN7YjjWFmeOwfFdXMGu1HEZb45SZHCCtb8ELsUVW4S', NULL, NULL, NULL, NULL, NULL, '2025-06-03', 'local');
+(4, '2test@gmail.com', '$2b$10$jDA9DGFeudjBN7YjjWFmeOwfFdXMGu1HEZb45SZHCCtb8ELsUVW4S', NULL, NULL, NULL, NULL, NULL, '2025-06-03', 'local'),
+(5, '3test@gmail.com', '$2b$10$32zYp2QjTP2TXkkmu/C8HeSdcWzk7PE61KK1E.kYWHyC7uMF5X2S.', NULL, NULL, NULL, NULL, NULL, '2025-06-04', 'local');
 
 -- --------------------------------------------------------
 
@@ -286,7 +287,7 @@ ALTER TABLE `subscription`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `userprofile`
