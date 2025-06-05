@@ -11,6 +11,7 @@ var usersRouter = require('./routes/users');
 const deviceRouter = require('./routes/devices');
 const emergencyRouter = require('./routes/emergencies');
 const userSubscriptionRouter = require('./routes/userSubscription');
+const chatRouter = require('./routes/chat');
 
 const cors = require('cors');
 var app = express(); // ✅ Define app first
@@ -36,6 +37,7 @@ app.use('/users', usersRouter);
 app.use('/devices', deviceRouter);
 app.use('/', emergencyRouter); 
 app.use('/userSubscription', userSubscriptionRouter);
+app.use('/', chatRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
