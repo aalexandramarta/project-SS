@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 07, 2025 at 05:06 PM
+-- Generation Time: Jun 08, 2025 at 05:52 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `s_s_db`
+-- Database: `ss_db`
 --
 
 -- --------------------------------------------------------
@@ -65,6 +65,14 @@ CREATE TABLE `health` (
   `distance(km)` int(11) DEFAULT NULL,
   `calories` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `health`
+--
+
+INSERT INTO `health` (`id`, `user_id`, `date`, `steps`, `distance(km)`, `calories`) VALUES
+(1, 4, '2025-06-08', 10, 0, 0),
+(2, 4, '2025-06-08', 30, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -114,14 +122,54 @@ CREATE TABLE `subscription` (
 CREATE TABLE `user` (
   `id` int(11) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
+  `password` varchar(255) DEFAULT NULL,
   `birth_date` date DEFAULT NULL,
-  `weight(kg)` int(11) DEFAULT NULL,
-  `height(cm)` int(11) DEFAULT NULL,
+  `weight_kg` int(11) DEFAULT NULL,
+  `height_cm` int(11) DEFAULT NULL,
   `has_diabetes` tinyint(1) DEFAULT NULL,
   `has_dementia` tinyint(1) DEFAULT NULL,
-  `created_at` date DEFAULT NULL
+  `created_at` date DEFAULT NULL,
+  `provider` varchar(50) DEFAULT 'local'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `user`
+--
+
+INSERT INTO `user` (`id`, `email`, `password`, `birth_date`, `weight_kg`, `height_cm`, `has_diabetes`, `has_dementia`, `created_at`, `provider`) VALUES
+(1, 'john.doe@example.com', '$2b$10$efq7vlgaP/.kSOzQc9/7UO4k8yDF.z5.Z1U1qxZrlJ5YG4L.D3w2K', '1990-05-22', 70, 175, 0, 0, '2025-05-22', 'local'),
+(2, '1test@gmail.com', '$2b$10$fcrrYOLnWDmrBrFP9G2mN.4Lrox.zp0Vtboos6PiKYOG47S/GQImi', NULL, NULL, NULL, NULL, NULL, '2025-05-23', 'local'),
+(3, 'testeoficial818@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, '2025-05-27', 'google'),
+(4, '2test@gmail.com', '$2b$10$jDA9DGFeudjBN7YjjWFmeOwfFdXMGu1HEZb45SZHCCtb8ELsUVW4S', NULL, NULL, NULL, NULL, NULL, '2025-06-03', 'local'),
+(5, '3test@gmail.com', '$2b$10$32zYp2QjTP2TXkkmu/C8HeSdcWzk7PE61KK1E.kYWHyC7uMF5X2S.', NULL, NULL, NULL, NULL, NULL, '2025-06-04', 'local');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `userprofile`
+--
+
+CREATE TABLE `userprofile` (
+  `id` int(11) NOT NULL,
+  `userId` int(11) NOT NULL,
+  `age` int(11) DEFAULT NULL,
+  `address` text DEFAULT NULL,
+  `gender` text DEFAULT NULL,
+  `phone` text DEFAULT NULL,
+  `emergencyName` text DEFAULT NULL,
+  `emergencyPhone` text DEFAULT NULL,
+  `medication` text DEFAULT NULL,
+  `allergies` text DEFAULT NULL,
+  `diseases` text DEFAULT NULL,
+  `name` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `userprofile`
+--
+
+INSERT INTO `userprofile` (`id`, `userId`, `age`, `address`, `gender`, `phone`, `emergencyName`, `emergencyPhone`, `medication`, `allergies`, `diseases`, `name`) VALUES
+(1, 2, 88, 'Antwerp', 'Male', '2913321', 'Bill', '2188732', 'None', 'None', 'None', 'John');
 
 -- --------------------------------------------------------
 
@@ -185,7 +233,15 @@ ALTER TABLE `subscription`
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `user_email_unique` (`email`);
+
+--
+-- Indexes for table `userprofile`
+--
+ALTER TABLE `userprofile`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `userId` (`userId`);
 
 --
 -- Indexes for table `user_subscription`
@@ -215,7 +271,7 @@ ALTER TABLE `emergency`
 -- AUTO_INCREMENT for table `health`
 --
 ALTER TABLE `health`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `medication`
@@ -239,7 +295,13 @@ ALTER TABLE `subscription`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `userprofile`
+--
+ALTER TABLE `userprofile`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `user_subscription`
@@ -281,6 +343,12 @@ ALTER TABLE `medication`
 --
 ALTER TABLE `reminder`
   ADD CONSTRAINT `reminder_ibfk_1` FOREIGN KEY (`medication_id`) REFERENCES `medication` (`id`);
+
+--
+-- Constraints for table `userprofile`
+--
+ALTER TABLE `userprofile`
+  ADD CONSTRAINT `userprofile_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `user_subscription`
