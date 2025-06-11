@@ -3,7 +3,11 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
+<<<<<<< HEAD
 -- Generation Time: Jun 04, 2025 at 07:40 PM
+=======
+-- Generation Time: Jun 08, 2025 at 05:52 PM
+>>>>>>> 5741c21daf1faa4ba6488616a035878dba56076c
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -65,6 +69,14 @@ CREATE TABLE `health` (
   `distance(km)` int(11) DEFAULT NULL,
   `calories` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `health`
+--
+
+INSERT INTO `health` (`id`, `user_id`, `date`, `steps`, `distance(km)`, `calories`) VALUES
+(1, 4, '2025-06-08', 10, 0, 0),
+(2, 4, '2025-06-08', 30, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -263,7 +275,7 @@ ALTER TABLE `emergency`
 -- AUTO_INCREMENT for table `health`
 --
 ALTER TABLE `health`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `medication`
