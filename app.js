@@ -11,11 +11,8 @@ var usersRouter = require('./routes/users');
 const deviceRouter = require('./routes/devices');
 const emergencyRouter = require('./routes/emergencies');
 const userSubscriptionRouter = require('./routes/userSubscription');
-<<<<<<< HEAD
-const chatRouter = require('./routes/chat');
-=======
 const healthRoutes = require('./routes/health'); // or './health' depending on your file structure
->>>>>>> 5741c21daf1faa4ba6488616a035878dba56076c
+const chatRoutes = require('./routes/chat'); 
 
 const cors = require('cors');
 var app = express(); // ✅ Define app first
@@ -41,11 +38,8 @@ app.use('/users', usersRouter);
 app.use('/devices', deviceRouter);
 app.use('/', emergencyRouter); 
 app.use('/userSubscription', userSubscriptionRouter);
-<<<<<<< HEAD
-app.use('/', chatRouter);
-=======
 app.use('/health', healthRoutes);
->>>>>>> 5741c21daf1faa4ba6488616a035878dba56076c
+app.use('/chat', chatRoutes)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
