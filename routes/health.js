@@ -28,19 +28,15 @@ router.post('/', async (req, res) => {
 router.get('/:user_id', async (req, res) => {
   const userId = parseInt(req.params.user_id);
 
-  if (isNaN(userId)) {
-    return res.status(400).json({ error: 'Invalid user_id' });
-  }
-
   try {
-    const records = await prisma.health.findMany({
+    const healthEntries = await prisma.health.findMany({
       where: { user_id: userId },
-      orderBy: { date: 'desc' },
+      orderBy: { date: 'desc' }, // 📅 latest first
     });
 
-    res.status(200).json(records);
+    res.json(healthEntries);
   } catch (error) {
-    console.error('Error fetching health data:', error);
+    console.error('Error fetching health entries:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });

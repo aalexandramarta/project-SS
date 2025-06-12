@@ -48,13 +48,14 @@ model health {
 }
 
 model medication {
-  id         Int        @id @default(autoincrement())
-  user_id    Int?
-  name       String?    @db.VarChar(255)
-  dosage_mg_ DateTime?  @map("dosage(mg)") @db.Date
-  instuction String?    @db.VarChar(255)
-  user       user?      @relation(fields: [user_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "medication_ibfk_1")
-  reminder   reminder[]
+  id            Int        @id @default(autoincrement())
+  user_id       Int?
+  name          String?    @db.VarChar(255)
+  dosage_mg     String?    @db.VarChar(100)
+  instuction    String?    @db.VarChar(255)
+  times_per_day Int?
+  user          user?      @relation(fields: [user_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "medication_ibfk_1")
+  reminder      reminder[]
 
   @@index([user_id], map: "user_id")
 }
