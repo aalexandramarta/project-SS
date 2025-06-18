@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-router.post('/chat', (req, res) => {
+router.post('/', (req, res) => {
   const { message } = req.body;
   const input = message.toLowerCase().trim();
 
