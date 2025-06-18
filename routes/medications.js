@@ -95,4 +95,42 @@ router.get('/:userId', async (req, res) => {
   }
 });
 
+// DELETE /medications/:userId/:medName
+router.delete('/:userId/:medName', async (req, res) => {
+  const { userId, medName } = req.params;
+
+  try {
+    // Find the medication ID first
+    const med = await prisma.medication.findFirst({
+      where: {
+        user_id: Number(userId),
+        name: medName,
+      },
+    });
+
+    if (!med) {
+      return res.status(404).json({ error: 'Medication not found' });
+    }
+
+    // Delete reminders first (because of foreign key constraint)
+    await prisma.reminder.deleteMany({
+      where: {
+        medication_id: med.id,
+      },
+    });
+
+    // Delete the medication
+    await prisma.medication.delete({
+      where: {
+        id: med.id,
+      },
+    });
+
+    res.status(200).json({ message: 'Medication deleted successfully' });
+  } catch (error) {
+    console.error('❌ Error in DELETE /medications:', error);
+    res.status(500).json({ error: 'Failed to delete medication' });
+  }
+});
+
 module.exports = router;

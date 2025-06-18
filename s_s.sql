@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 12, 2025 at 06:03 PM
+-- Generation Time: Jun 18, 2025 at 02:07 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -72,7 +72,8 @@ CREATE TABLE `health` (
 
 INSERT INTO `health` (`id`, `user_id`, `date`, `steps`, `distance(km)`, `calories`) VALUES
 (1, 4, '2025-06-08', 10, 0, 0),
-(2, 4, '2025-06-08', 30, 0, 0);
+(2, 4, '2025-06-08', 30, 0, 0),
+(3, 4, '2025-06-13', 38, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -287,7 +288,7 @@ ALTER TABLE `emergency`
 -- AUTO_INCREMENT for table `health`
 --
 ALTER TABLE `health`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `medication`
