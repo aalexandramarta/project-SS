@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 18, 2025 at 02:07 PM
+-- Generation Time: Jun 18, 2025 at 11:22 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -95,7 +95,8 @@ CREATE TABLE `medication` (
 --
 
 INSERT INTO `medication` (`id`, `user_id`, `name`, `dosage_mg`, `instuction`, `times_per_day`) VALUES
-(1, 4, 'Paracetamol', '500g', 'Before sleep', 1);
+(3, 4, 'Paracetamol', '500g', 'After dinner', NULL),
+(4, 4, 'Paracetamol', '500g', 'After dinner', NULL);
 
 -- --------------------------------------------------------
 
@@ -116,7 +117,8 @@ CREATE TABLE `reminder` (
 --
 
 INSERT INTO `reminder` (`id`, `medication_id`, `remind_at`, `frequency`, `next_reminder`) VALUES
-(1, 1, '22:00:00', 'daily', '2025-06-12 18:00:00');
+(3, 3, '21:23:00', 'daily', '2025-06-18 17:23:00'),
+(4, 4, '21:27:00', 'daily', '2025-06-18 17:27:00');
 
 -- --------------------------------------------------------
 
@@ -157,7 +159,9 @@ INSERT INTO `user` (`id`, `email`, `password`, `birth_date`, `weight_kg`, `heigh
 (2, '1test@gmail.com', '$2b$10$fcrrYOLnWDmrBrFP9G2mN.4Lrox.zp0Vtboos6PiKYOG47S/GQImi', NULL, NULL, NULL, NULL, NULL, '2025-05-23', 'local'),
 (3, 'testeoficial818@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, '2025-05-27', 'google'),
 (4, '2test@gmail.com', '$2b$10$jDA9DGFeudjBN7YjjWFmeOwfFdXMGu1HEZb45SZHCCtb8ELsUVW4S', NULL, NULL, NULL, NULL, NULL, '2025-06-03', 'local'),
-(5, '3test@gmail.com', '$2b$10$32zYp2QjTP2TXkkmu/C8HeSdcWzk7PE61KK1E.kYWHyC7uMF5X2S.', NULL, NULL, NULL, NULL, NULL, '2025-06-04', 'local');
+(5, '3test@gmail.com', '$2b$10$32zYp2QjTP2TXkkmu/C8HeSdcWzk7PE61KK1E.kYWHyC7uMF5X2S.', NULL, NULL, NULL, NULL, NULL, '2025-06-04', 'local'),
+(6, '5test@gmail.com', '$2b$10$O/b3SJrgSCrOHaSLbgBHDOlhKyJCgrclyCZ43.RT95aj8nFAUIxum', NULL, NULL, NULL, NULL, NULL, '2025-06-18', 'local'),
+(7, '6test@gmail.com', '$2b$10$MPUYezHNHGW3UHXB.J16mOi7vULoz7X0hPhsSMM9IIYdtcxV.226O', NULL, NULL, NULL, NULL, NULL, '2025-06-18', 'local');
 
 -- --------------------------------------------------------
 
@@ -186,7 +190,7 @@ CREATE TABLE `userprofile` (
 
 INSERT INTO `userprofile` (`id`, `userId`, `age`, `address`, `gender`, `phone`, `emergencyName`, `emergencyPhone`, `medication`, `allergies`, `diseases`, `name`) VALUES
 (1, 2, 88, 'Antwerp', 'Male', '2913321', 'Bill', '2188732', 'None', 'None', 'None', 'John'),
-(2, 4, NULL, '', 'Male', '', '', '', '', '', '', '');
+(2, 4, 99, 'Beverly Hills', 'Male', '12393932', 'Joe', '1292331', 'Paracetamol', 'None', 'None', 'Teste');
 
 -- --------------------------------------------------------
 
@@ -294,13 +298,13 @@ ALTER TABLE `health`
 -- AUTO_INCREMENT for table `medication`
 --
 ALTER TABLE `medication`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `reminder`
 --
 ALTER TABLE `reminder`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `subscription`
@@ -312,7 +316,7 @@ ALTER TABLE `subscription`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `userprofile`
