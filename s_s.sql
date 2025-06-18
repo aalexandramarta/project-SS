@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 08, 2025 at 05:52 PM
+-- Generation Time: Jun 18, 2025 at 02:07 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -72,7 +72,8 @@ CREATE TABLE `health` (
 
 INSERT INTO `health` (`id`, `user_id`, `date`, `steps`, `distance(km)`, `calories`) VALUES
 (1, 4, '2025-06-08', 10, 0, 0),
-(2, 4, '2025-06-08', 30, 0, 0);
+(2, 4, '2025-06-08', 30, 0, 0),
+(3, 4, '2025-06-13', 38, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -84,9 +85,17 @@ CREATE TABLE `medication` (
   `id` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
-  `dosage(mg)` date DEFAULT NULL,
-  `instuction` varchar(255) DEFAULT NULL
+  `dosage_mg` varchar(100) DEFAULT NULL,
+  `instuction` varchar(255) DEFAULT NULL,
+  `times_per_day` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `medication`
+--
+
+INSERT INTO `medication` (`id`, `user_id`, `name`, `dosage_mg`, `instuction`, `times_per_day`) VALUES
+(1, 4, 'Paracetamol', '500g', 'Before sleep', 1);
 
 -- --------------------------------------------------------
 
@@ -101,6 +110,13 @@ CREATE TABLE `reminder` (
   `frequency` varchar(100) DEFAULT NULL,
   `next_reminder` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `reminder`
+--
+
+INSERT INTO `reminder` (`id`, `medication_id`, `remind_at`, `frequency`, `next_reminder`) VALUES
+(1, 1, '22:00:00', 'daily', '2025-06-12 18:00:00');
 
 -- --------------------------------------------------------
 
@@ -169,7 +185,8 @@ CREATE TABLE `userprofile` (
 --
 
 INSERT INTO `userprofile` (`id`, `userId`, `age`, `address`, `gender`, `phone`, `emergencyName`, `emergencyPhone`, `medication`, `allergies`, `diseases`, `name`) VALUES
-(1, 2, 88, 'Antwerp', 'Male', '2913321', 'Bill', '2188732', 'None', 'None', 'None', 'John');
+(1, 2, 88, 'Antwerp', 'Male', '2913321', 'Bill', '2188732', 'None', 'None', 'None', 'John'),
+(2, 4, NULL, '', 'Male', '', '', '', '', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -271,19 +288,19 @@ ALTER TABLE `emergency`
 -- AUTO_INCREMENT for table `health`
 --
 ALTER TABLE `health`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `medication`
 --
 ALTER TABLE `medication`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `reminder`
 --
 ALTER TABLE `reminder`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `subscription`
@@ -301,7 +318,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `userprofile`
 --
 ALTER TABLE `userprofile`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `user_subscription`
